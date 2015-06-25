@@ -1,0 +1,44 @@
+application: app-id
+version: 2015-06-14
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+default_expiration: "365d"
+
+handlers:
+- url: /static
+  static_dir: static
+
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /robots\.txt
+  static_files: robots.txt
+  upload: robots\.txt
+
+
+- url: /user/.*
+  script: main.app
+  login: required
+
+- url: /cron/.*
+  script: main.app
+  login: admin
+
+- url: /admin/.*
+  script: main.app
+  login: admin
+
+- url: .*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: latest
+
+
+automatic_scaling:
+  min_idle_instances: 1
+  max_idle_instances: 1
