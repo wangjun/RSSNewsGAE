@@ -13,3 +13,4 @@
 - 每抓取一个新闻，如果满足某个用户的关键词，则用PushOver推送到这个用户的手机端。
 
 
+分词需要配合 https://github.com/geeklian/Jieba-GAE 使用
