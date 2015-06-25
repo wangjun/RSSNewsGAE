@@ -1,4 +1,4 @@
-application: app-id
+application: 24ae7c
 version: 2015-06-14
 runtime: python27
 api_version: 1
@@ -21,7 +21,7 @@ handlers:
 
 - url: /user/.*
   script: main.app
-  login: required
+  login: admin
 
 - url: /cron/.*
   script: main.app
