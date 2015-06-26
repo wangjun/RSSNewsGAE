@@ -30,8 +30,9 @@ COLLECT_DAYS = 0
 COLLECT_HOURS = 2
 ENTRY_SAVE_DAYS = 2
 # JIEBA_URL = "http://localhost:8080/analyse"
+JIEBA_URL = "http://2b359e.appspot.com/analyse"
 PUSH_OVER_URL = "https://api.pushover.net/1/messages.json"
-PUSH_OVER_APP = ""
+PUSH_OVER_APP = "atHi9r6xV93dPbuYdgyLSekvyquJBp"
 
 CONT = 5
 
