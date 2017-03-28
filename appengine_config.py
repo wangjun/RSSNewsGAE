@@ -1,15 +1,25 @@
-from gaesessions import SessionMiddleware
+#!/usr/bin/env python27
+# -*- coding: utf-8 -*- 
+__author__ = 'liant'
+import os
+from google.appengine.ext import vendor
 
-# suggestion: generate your own random key using os.urandom(64)
-# WARNING: Make sure you run os.urandom(64) OFFLINE and copy/paste the output to
-# this file.  If you use os.urandom() to *dynamically* generate your key at
-# runtime then any existing sessions will become junk every time you start,
-# deploy, or update your app!
-COOKIE_KEY = '0K8q0p8cwRaEORqKqJ9wNnuG7gELqE0Xhq2ebfVrgicHrr5B0InHcLwTbDVR'
+# Add any libraries installed in the "lib" folder.
+vendor.add('lib')
 
+#
+# Enable ctypes on dev appserver so we get proper flask tracebacks.
+# From http://jinja.pocoo.org/docs/dev/faq/#my-tracebacks-look-weird-what-s-happening
+# and http://stackoverflow.com/questions/3086091/debug-jinja2-in-google-app-engine
+PRODUCTION_MODE = not os.environ.get(
+    'SERVER_SOFTWARE', 'Development').startswith('Development')
+if not PRODUCTION_MODE:
+    from google.appengine.tools.devappserver2.python import sandbox
 
-def webapp_add_wsgi_middleware(app):
-    # from google.appengine.ext.appstats import recording
-    app = SessionMiddleware(app, cookie_key=COOKIE_KEY)
-    # app = recording.appstats_wsgi_middleware(app)
-    return app
+    sandbox._WHITE_LIST_C_MODULES += ['_ctypes', 'gestalt']
+    import os
+    import sys
+
+    if os.name == 'nt':
+        os.name = None
+        sys.platform = ''

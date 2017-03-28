@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+
+
+
+    <h2>关键词</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>关键词</th>
+            <th>激活</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for keyword in keyword_list %}
+            <tr id="{{ keyword.key.urlsafe() }}">
+                <th scope="row">{{ keyword.word }}</th>
+                <td><input type="checkbox" class="keyword-switch" data-group-cls="btn-group-sm"
+                           {% if keyword.enable %}checked{% endif %}/></td>
+                <td>
+                    <a href="{{ url_for("del_keyword",key=keyword.key.urlsafe()) }}"
+                       class="btn btn-danger btn-sm btn-block">删除</a>
+                </td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <form id="keyword_form" method="post" action="{{ url_for("add_keyword") }}">
+                <th><input type="text" class="form-control" name="word" placeholder="KeyWord" required="required"></th>
+                <td>
+
+                    <input type="submit" class="btn btn-success btn-sm btn-block" value="添加">
+
+                </td>
+                <td>
+
+                </td>
+            </form>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+    <hr/>
+    <h2>Feed</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>标题</th>
+            <th>URL</th>
+            <th>间隔</th>
+            <th>激活</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for feed in feed_list %}
+            <tr id="{{ feed.key.urlsafe() }}">
+                <th scope="row">{{ feed.title }}</th>
+                <th scope="row">{{ feed.url }}</th>
+                <th scope="row">{{ feed.delay }}</th>
+                <td><input type="checkbox" class="feed-switch" data-group-cls="btn-group-sm"
+                           {% if feed.enable %}checked{% endif %}/></td>
+                <td>
+                    <a href="{{ url_for("del_feed",key=feed.key.urlsafe()) }}" class="btn btn-danger btn-sm btn-block">删除</a>
+                </td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <form id="add_feed_form" method="post" action="{{ url_for("add_feed") }}">
+                <th><input type="text" class="form-control" name="title" placeholder="Title" required="required"></th>
+                <th><input type="url" class="form-control" name="url" placeholder="http://" required="required"></th>
+                <th>
+
+                    <select class="form-control" name="delay" required="required">
+                        <option value="daily">每日</option>
+                        <option value="hourly">每小时</option>
+                        <option value="quarterly" selected="selected">每刻种</option>
+                    </select></th>
+
+                <td>
+
+                    <input type="submit" class="btn btn-success btn-sm btn-block" value="添加">
+
+                </td>
+                <td>
+
+                </td>
+            </form>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+
+
+{% endblock %}
+
+
+
+{% block extend_css %}
+
+{% endblock %}
+
+
+{% block extend_js %}
+    <script src="{{ url_for('static', filename='js/bootstrap-checkbox.min.js') }}"></script>
+{% endblock %}
+
+{% block extend_script %}
+    <script language="JavaScript">
+        $('.keyword-switch').checkboxpicker();
+        $('.feed-switch').checkboxpicker();
+        $('.keyword-switch').change(function () {
+            $.ajax({
+                type: "POST",
+                url: "{{ url_for("keyword_switch") }}",
+                data: JSON.stringify({
+                    "key": $(this).parent().parent().attr('id'),
+                    "action": "switch_enable"
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(jqXHR);
+                },
+                error: function (xhr, textStatus) {
+                    alert("错误,请看日志");
+                    console.log(textStatus);
+                    console.log(jqXHR);
+                }
+            });
+        });
+        $('.feed-switch').change(function () {
+            $.ajax({
+                type: "POST",
+                url: "{{ url_for("feed_switch") }}",
+                data: JSON.stringify({
+                    "key": $(this).parent().parent().attr('id'),
+                    "action": "switch_enable"
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(jqXHR);
+                },
+                error: function (xhr, textStatus) {
+                    alert("错误,请看日志");
+                    console.log(textStatus);
+                    console.log(jqXHR);
+                }
+            });
+        });
+    </script>
+{% endblock %}

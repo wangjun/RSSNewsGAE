@@ -1,22 +1,4 @@
 cron:
-- description: worktime feedfetch job
-  url: /cron/FetchFeed
-  schedule: every 5 minutes from 8:30 to 15:00
-  timezone: Asia/Shanghai
-- description: non - worktime feedfetch job
-  url: /cron/FetchFeed
-  schedule: every 15 minutes from 0:01 to 8:29
-  timezone: Asia/Shanghai
-- description: non - worktime feedfetch job2
-  url: /cron/FetchFeed
-  schedule: every 15 minutes from 15:01 to 23:59
-  timezone: Asia/Shanghai
-- description: collect word from the all entry
-  url: /cron/CollectWord
-  schedule: every 5 minutes
-- description: del old  entry
-  url: /cron/DelOldEntry
-  schedule: every 24 hours
-- description: pushmsg
-  url: /cron/PushMsg
-  schedule: every 5 minutes
+- description: fetchfeed
+  url: /cron/feed_corn
+  schedule: every 15 minutes
