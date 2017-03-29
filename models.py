@@ -21,6 +21,8 @@
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
 
+from main import app
+
 feed_delay_choice = ('daily', 'hourly', 'quarterly')
 
 
@@ -38,7 +40,8 @@ class NewsEntry(ndb.Model):
     link = ndb.TextProperty()
     summary = ndb.TextProperty()
     feed = ndb.TextProperty()
-    key_word = ndb.StringProperty(repeated=True, indexed=False)
+    key_word = ndb.TextProperty(repeated=True, indexed=False)
+    important = ndb.BooleanProperty(default=False)
 
 
 class KeyWord(ndb.Model):
@@ -65,9 +68,21 @@ def get_enable_keyword():
         memcache.add(key="enable_keyword", value=data, time=86400 * 30)
     return data
 
+def get_pure_keyword():
+    data = memcache.get(key="pure_keyword")
+    if data is None:
+        data = []
+        q = KeyWord.query(KeyWord.enable == True)
+        key_words = ndb.get_multi(q.fetch(keys_only=True))
+        for key_word in key_words:
+            data.append(key_word.word)
+        memcache.add(key="pure_keyword", value=data, time=86400 * 30)
+    return data
+
+
 
 def flush_keyword_cache():
-    return memcache.delete_multi(keys=["enable_keyword", "keyword"])
+    return memcache.delete_multi(keys=["enable_keyword", "keyword",'pure_keyword'])
 
 
 def get_feed():
@@ -120,3 +135,21 @@ def get_hourly_feed_key():
 
 def get_quarterly_feed_key():
     return Feed.query(Feed.delay == "quarterly", Feed.enable == True).fetch(keys_only=True)
+
+
+def get_latest_news():
+    data = memcache.get(key="latest_news")
+    if data is None:
+        q = NewsEntry.query().order(-NewsEntry.published)
+        data = ndb.get_multi(q.fetch(limit=app.config["PER_PAGE"],keys_only=True))
+        memcache.add(key="latest_news", value=data, time=app.config["INDEX_CACHE_TIME"])
+    return data
+
+
+def get_important_news():
+    data = memcache.get(key="important_news")
+    if data is None:
+        q = NewsEntry.query(NewsEntry.important==True).order(-NewsEntry.published)
+        data = ndb.get_multi(q.fetch(limit=app.config["PER_PAGE"],keys_only=True))
+        memcache.add(key="important_news", value=data, time=app.config["INDEX_CACHE_TIME"])
+    return data

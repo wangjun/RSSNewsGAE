@@ -17,10 +17,7 @@ handlers:
 - url: /admin/.*
   script: main.app
   login: admin
-- url: /cron/.*
-  script: main.app
-  login: admin
-- url: /queue/.*
+- url: /background/.*
   script: main.app
   login: admin
 - url: /.*

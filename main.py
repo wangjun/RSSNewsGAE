@@ -20,17 +20,22 @@
 import os
 
 from flask import Flask
+from flask_moment import Moment
+
 
 PER_PAGE = 50
 
 app = Flask(__name__)
+moment = Moment(app)
+
 if 'SERVER_SOFTWARE' in os.environ and os.environ['SERVER_SOFTWARE'].startswith('Dev'):
     app.config.from_object('settings.Development')
 else:
     app.config.from_object('settings.Production')
 
+
+
 import views.public
 import views.admin
-import views.cronjob
-import views.queue
+import views.background
 import views.errorhandlers

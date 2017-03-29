@@ -2,5 +2,40 @@
 {% block content %}
      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
+        {% for news in news_list %}
+            <div class="panel {% if news.important %}panel-primary{% else %}panel-default{% endif %}">
+                <div class="panel-heading" role="tab" id="heading-{{ news.key.integer_id() }}">
+                    <h4 class="panel-title"
+                        style="white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ news.key.integer_id() }}"
+                           aria-expanded="true"
+                           aria-controls="collapse-{{ news.key.integer_id() }}">
+                            <span class="label  label-default">{{ moment(news.published).format("HH:mm") }}</span>&nbsp
+                            {{ news.title }}
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse-{{ news.key.integer_id() }}" class="panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="heading-{{ news.key.integer_id() }}">
+                    <div class="panel-body">
+                        <p>
+                            <a href="{{ news.link }}" type="button" class="btn btn-success btn-xs">访问原始链接</a> <span
+                                class="label label-default">{{ moment(news.published).format("lll")  }} @ {{ news.feed }}</span>
+                        </p>
+
+                        <p class="">{{ news.summary }}</p>
+                        <p>
+                        {% for key_word in news.key_word %}
+                        <span class="label {% if key_word in user_key_word %}label-warning{% else %}label-default{% endif %}">{{ key_word }}</span>
+                        {% endfor %}
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+
+        {% endfor %}
+
     </div>
 {% endblock %}

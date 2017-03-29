@@ -8,8 +8,35 @@
     <meta name="author" content="Lian Tian">
     <meta name="keywords" content="股票,新闻,筛选,汇集">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
+{#    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">#}
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/moment-with-locales.min.js') }}"></script>
+    <script>
+        moment.locale("zh-cn");
+        function flask_moment_render(elem) {
+            $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'));
+            $(elem).removeClass('flask-moment').show();
+        }
+        function flask_moment_render_all() {
+            $('.flask-moment').each(function () {
+                flask_moment_render(this);
+                if ($(this).data('refresh')) {
+                    (function (elem, interval) {
+                        setInterval(function () {
+                            flask_moment_render(elem)
+                        }, interval);
+                    })(this, $(this).data('refresh'));
+                }
+            })
+        }
+        $(document).ready(function () {
+            flask_moment_render_all();
+        });
+
+    </script>
+    {#{{ moment.include_moment() }}#}
     {% block extend_css %}
     {% endblock %}
 
@@ -18,7 +45,7 @@
 
 <body>
 
-<nav class="navbar navbar-default  navbar-static-top navbar-inverse" role="navigation">
+<nav class="navbar navbar-default  navbar-static-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -33,6 +60,10 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="{{ url_for('index') }}">首页</a></li>
+                <li><a href="{{ url_for('important') }}">重要</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{ url_for('admin') }}">管理</a></li>
             </ul>
 
@@ -48,7 +79,6 @@
 </div>
 
 
-
 <footer class="footer">
     <div class="container">
         <p class="text-muted">&copy; 2010-{{ config.PROCESS_TIME.strftime('%Y') }} <a href="https://liantian.me/">
@@ -57,32 +87,31 @@
 </footer>
 
 
-<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
 {% block extend_js %}
 {% endblock %}
 
- <script language="JavaScript">
-     $(function(){
-      function stripTrailingSlash(str) {
-        if(str.substr(-1) == '/') {
-          return str.substr(0, str.length - 1);
+<script language="JavaScript">
+    $(function () {
+        function stripTrailingSlash(str) {
+            if (str.substr(-1) == '/') {
+                return str.substr(0, str.length - 1);
+            }
+            return str;
         }
-        return str;
-      }
 
-  var url = window.location.pathname;
-  var activePage = stripTrailingSlash(url);
+        var url = window.location.pathname;
+        var activePage = stripTrailingSlash(url);
 
-  $('.nav li a').each(function(){
-        var currentPage = stripTrailingSlash($(this).attr('href'));
+        $('.nav li a').each(function () {
+            var currentPage = stripTrailingSlash($(this).attr('href'));
 
-        if (activePage == currentPage) {
-          $(this).parent().addClass('active');
-        }
-      });
+            if (activePage == currentPage) {
+                $(this).parent().addClass('active');
+            }
+        });
     });
- </script>
+</script>
 {% block extend_script %}
 {% endblock %}
 

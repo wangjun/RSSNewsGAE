@@ -1,4 +1,7 @@
 cron:
-- description: fetchfeed
-  url: /cron/feed_corn
+- description: launch_fetch
+  url: /background/launch_fetch/
   schedule: every 15 minutes
+- description: delete_old_news
+  url: /background/delete_old_news/
+  schedule: every 24 hours

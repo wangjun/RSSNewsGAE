@@ -28,11 +28,18 @@ import string
 # Imports from your apps
 
 # Create your models here.
+from private import PUSH_OVER_URL,PUSHOVER_APP_KEY,PUSHOVER_USER_KEY
 
 random.seed = (os.urandom(1024))
 
 
 class CommonSetting(object):
+    USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10; rv:33.0) Gecko/20100101 Firefox/33.0"
+    DEADLINE = 1
+    JIEBA_API = "https://jieba.liantian.me/analyse_textrank"
+    TOP_KEYWORD = 14
+    PER_PAGE = 100
+    INDEX_CACHE_TIME = 60 * 15
     SITE_URL = u"https://stocknews.liantian.me"
     ADMIN_EMAIL = u"liantian.me@gmail.com"
     TIME_FORMAT = u'%Y-%m-%d'
@@ -40,6 +47,10 @@ class CommonSetting(object):
     PROCESS_TIME = datetime.datetime.now(tz  = TIME_ZONE)
     SECRET_KEY = ''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(32))
     CSRF_SESSION_KEY = ''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(32))
+    PUSHOVER = True
+    PUSHOVER_APP_KEY = PUSHOVER_APP_KEY
+    PUSHOVER_USER_KEY = PUSHOVER_USER_KEY
+    PUSH_OVER_URL = PUSH_OVER_URL
 
 
 

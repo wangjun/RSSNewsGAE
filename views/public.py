@@ -16,13 +16,22 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-from flask import send_file, request, render_template, redirect, url_for, flash, jsonify
+
+from flask import render_template
 from main import app
-from models import KeyWord
-from google.appengine.ext import ndb
-from models import get_enable_keyword, get_keyword, flush_keyword_cache
+
+from models import get_latest_news, get_pure_keyword, get_important_news
+
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template("index.html")
+    news_list = get_latest_news()
+    user_key_word = get_pure_keyword()
+    return render_template("index.html", news_list=news_list, user_key_word=user_key_word)
 
+
+@app.route('/important', methods=['GET'])
+def important():
+    news_list = get_important_news()
+    user_key_word = get_pure_keyword()
+    return render_template("index.html", news_list=news_list, user_key_word=user_key_word)
