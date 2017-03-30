@@ -38,8 +38,8 @@ class CommonSetting(object):
     DEADLINE = 1
     JIEBA_API = "https://jieba.liantian.me/analyse_textrank"
     TOP_KEYWORD = 14
-    PER_PAGE = 100
-    INDEX_CACHE_TIME = 60 * 15
+    PER_PAGE = 75
+    INDEX_CACHE_TIME = 60 * 30
     SITE_URL = u"https://stocknews.liantian.me"
     ADMIN_EMAIL = u"liantian.me@gmail.com"
     TIME_FORMAT = u'%Y-%m-%d'

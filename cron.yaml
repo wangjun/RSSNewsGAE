@@ -4,4 +4,4 @@ cron:
   schedule: every 15 minutes
 - description: delete_old_news
   url: /background/delete_old_news/
-  schedule: every 24 hours
+  schedule: every 4 hours
