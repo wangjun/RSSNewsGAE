@@ -1,6 +1,6 @@
 ## RSSNewsGAE
 
-demo：https://stocknews.liantian.me/
+demo：https://financenews.liantian.me/
 
 抓取feed上的新闻，使第三方库feedparser分析。
 
