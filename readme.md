@@ -2,6 +2,8 @@
 
 demo：https://financenews.liantian.me/
 
+![Powered by Google App Engine](https://cloud.google.com/appengine/images/appengine-silver-120x30.gif)
+
 抓取feed上的新闻，使第三方库feedparser分析。
 
 对每条纪录，使用jieba分词进行关键词提取。
