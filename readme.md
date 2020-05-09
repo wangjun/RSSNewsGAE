@@ -1,6 +1,6 @@
 ## RSSNewsGAE
 
-demo：https://financenews.liantian.me/
+demo：https://stocknews.liantian.me/
 
 ![Powered by Google App Engine](https://cloud.google.com/appengine/images/appengine-silver-120x30.gif)
 
